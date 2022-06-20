@@ -7,10 +7,45 @@
 <script>THREEx.ArToolkitContext.baseURL = '../'</script>
 
 <body style='margin : 0px; overflow: hidden; font-family: Monospace;'><div style='position: absolute; top: 10px; width:100%; text-align: center; z-index: 1;'>
-	<a href="https://github.com/jeromeetienne/AR.js/" target="_blank">AR.js</a> - three.js camera transform
-	<br/>
-	Contact me any time at <a href='https://twitter.com/jerome_etienne' target='_blank'>@jerome_etienne</a>
-</div><script>
+
+</div>
+
+<style>
+.responsive {
+width: 100%;
+height: auto;
+}
+
+.anybutton {
+     top:60%;
+     left:32%;
+     position: absolute;
+     z-index: 2;
+}
+
+
+
+</style>
+
+
+<body style='margin : 0px; overflow: hidden; font-family: Monospace;'>
+
+
+
+	<a>
+		<a href="item.html" tager="_self">
+			<img src="images/AR_UI.png"  alt="button" class="responsive" />
+		</a>
+	<a>
+
+		<a>
+			<a href="HRY3.html" tager="_self">
+		<img src="images/B_button3.png" style="height:60px;width:170px;" alt="button" class="anybutton" />
+	</a>
+<a>
+
+
+<script>
 	//////////////////////////////////////////////////////////////////////////////////
 	//		Init
 	//////////////////////////////////////////////////////////////////////////////////
@@ -105,8 +140,7 @@
 
 	// init controls for camera
 	var markerControls = new THREEx.ArMarkerControls(arToolkitContext, camera, {
-		type : 'pattern',
-		patternUrl : THREEx.ArToolkitContext.baseURL + '../data/data/patt.hiro',
+			type: 'pattern', patternUrl: "data/05.patt",
 		// patternUrl : THREEx.ArToolkitContext.baseURL + '../data/data/patt.kanji',
 		// as we controls the camera, set changeMatrixMode: 'cameraTransformMatrix'
 		changeMatrixMode: 'cameraTransformMatrix'
@@ -119,21 +153,23 @@
 	//////////////////////////////////////////////////////////////////////////////////
 
 	// add a torus knot
-	var geometry	= new THREE.CubeGeometry(1,1,1);
-	var material	= new THREE.MeshNormalMaterial({
-		transparent : true,
-		opacity: 0.5,
-		side: THREE.DoubleSide
-	});
-	var mesh	= new THREE.Mesh( geometry, material );
-	mesh.position.y	= geometry.parameters.height/2
-	scene.add( mesh );
+	markerRoot1 = new THREE.Group();
+	scene.add(markerRoot1);
+	let markerControls1 = new THREEx.ArMarkerControls(arToolkitContext, markerRoot1, {
+		type: 'pattern', patternUrl: "data/01.patt",
+	})
 
-	var geometry	= new THREE.TorusKnotGeometry(0.3,0.1,64,16);
-	var material	= new THREE.MeshNormalMaterial();
-	var mesh	= new THREE.Mesh( geometry, material );
-	mesh.position.y	= 0.5
-	scene.add( mesh );
+	let geometry1 = new THREE.PlaneBufferGeometry(2,2, 4,4);
+	let loader = new THREE.TextureLoader();
+	let texture = loader.load( 'images/01.png', render );
+
+
+	let material1 = new THREE.MeshBasicMaterial( { map: texture } );
+
+	mesh1 = new THREE.Mesh( geometry1, material1 );
+	mesh1.rotation.x = -Math.PI/2;
+
+	markerRoot1.add( mesh1 );
 
 	onRenderFcts.push(function(delta){
 		mesh.rotation.x += Math.PI*delta
