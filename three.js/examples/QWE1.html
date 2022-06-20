@@ -134,37 +134,43 @@ height: auto;
 		scene.visible = camera.visible
 	})
 
+	
+	
 	////////////////////////////////////////////////////////////////////////////////
 	//          Create a ArMarkerControls
 	////////////////////////////////////////////////////////////////////////////////
 
 	// init controls for camera
-
+	var markerControls = new THREEx.ArMarkerControls(arToolkitContext, camera, {
+	    type: 'pattern', patternUrl: "data/05.patt",
+		// patternUrl : THREEx.ArToolkitContext.baseURL + '../data/data/patt.kanji',
+		// as we controls the camera, set changeMatrixMode: 'cameraTransformMatrix'
+		changeMatrixMode: 'cameraTransformMatrix'
+	})
 	// as we do changeMatrixMode: 'cameraTransformMatrix', start with invisible scene
 	scene.visible = false
+
 
 	//////////////////////////////////////////////////////////////////////////////////
 	//		add an object in the scene
 	//////////////////////////////////////////////////////////////////////////////////
 
 	// add a torus knot
-	markerRoot1 = new THREE.Group();
-	scene.add(markerRoot1);
-	let markerControls1 = new THREEx.ArMarkerControls(arToolkitContext, markerRoot1, {
-		type: 'pattern', patternUrl: "data/01.patt",
-	})
+	var geometry	= new THREE.CubeGeometry(1,1,1);
+	var material	= new THREE.MeshNormalMaterial({
+		transparent : true,
+		opacity: 0.5,
+		side: THREE.DoubleSide
+	});
+	var mesh	= new THREE.Mesh( geometry, material );
+	mesh.position.y	= geometry.parameters.height/2
+	scene.add( mesh );
 
-	let geometry1 = new THREE.PlaneBufferGeometry(2,2, 4,4);
-	let loader = new THREE.TextureLoader();
-	let texture = loader.load( 'images/01.png', render );
-
-
-	let material1 = new THREE.MeshBasicMaterial( { map: texture } );
-
-	mesh1 = new THREE.Mesh( geometry1, material1 );
-	mesh1.rotation.x = -Math.PI/2;
-
-	markerRoot1.add( mesh1 );
+	var geometry	= new THREE.TorusKnotGeometry(0.3,0.1,64,16);
+	var material	= new THREE.MeshNormalMaterial();
+	var mesh	= new THREE.Mesh( geometry, material );
+	mesh.position.y	= 0.5
+	scene.add( mesh );
 
 	onRenderFcts.push(function(delta){
 		mesh.rotation.x += Math.PI*delta
